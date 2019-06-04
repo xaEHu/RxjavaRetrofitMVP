@@ -1,8 +1,6 @@
 package com.xaehu.myapplication.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -36,7 +34,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements View.On
     }
 
     private void gotoLogin() {
-        Intent intent = new Intent(this,LoginActivity.class);
+        Intent intent = new Intent(this,SearchActivity.class);
         startActivity(intent);
     }
 
@@ -48,11 +46,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements View.On
     @Override
     public MainPresenter newP() {
         return new MainPresenter();
-    }
-
-    @Override
-    public void error() {
-
     }
 
     @Override

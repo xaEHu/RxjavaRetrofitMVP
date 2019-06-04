@@ -7,13 +7,10 @@ public interface IView<P extends IPresenter> {
      */
     int getLayoutId() ;
 
-    void initView();
-
     void initData();
 
     void initListener();
 
     P newP();
 
-    void error();
 }

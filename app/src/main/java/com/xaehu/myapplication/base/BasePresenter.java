@@ -1,10 +1,11 @@
 package com.xaehu.myapplication.base;
 
 import com.xaehu.myapplication.mvp.IPresenter;
+import com.xaehu.myapplication.mvp.IView;
 
 import java.lang.ref.WeakReference;
 
-public class BasePresenter<V extends BaseActivity> implements IPresenter<V> {
+public class BasePresenter<V extends IView> implements IPresenter<V> {
 
     private WeakReference<V> v;
 
