@@ -42,6 +42,11 @@ public class SearchPresenter extends BasePresenter<SearchActivity> {
                     @Override
                     public void onError(Throwable e) {
                         getV().onError(e);
+                        if(page == 1){
+                            getV().showError(e.getMessage());
+                        }else{
+                            getV().loadFail();
+                        }
                     }
 
                     @Override

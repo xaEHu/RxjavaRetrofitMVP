@@ -24,13 +24,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements View.On
 
     @Override
     public void initData() {
-        String name = getIntent().getStringExtra("name");
-        if(name!=null && !"".equals(name)){
-            String pass = getIntent().getStringExtra("pwd");
-            tvMain.setText(String.format("name:%s\npassword:%s",name,pass));
-        }else{
-            tvMain.setText("点击去登录");
-        }
+
     }
 
     private void gotoLogin() {

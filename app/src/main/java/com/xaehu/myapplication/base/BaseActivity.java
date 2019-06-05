@@ -1,12 +1,11 @@
 package com.xaehu.myapplication.base;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +23,7 @@ import retrofit2.HttpException;
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IView<P> {
 
     private P p;
+    private View emptyView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,11 +106,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      * @param msg 错误信息
      */
     public void showErrorView(BaseQuickAdapter adapter,String msg){
-        View errorView=getLayoutInflater().inflate(R.layout.view_error, null);
-//        errorView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.MATCH_PARENT));
-        ((TextView)errorView.findViewById(R.id.tv_error_msg)).setText(msg);
-        adapter.setEmptyView(errorView);
+        //// TODO: 2019/6/5 替换错误布局图片
+        setAdapterView(adapter,msg,R.mipmap.ic_launcher,false);
     }
 
     /**
@@ -118,9 +115,39 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      * @param adapter recyclerView的适配器
      */
     public void showEmptyView(BaseQuickAdapter adapter){
-        View emptyView=getLayoutInflater().inflate(R.layout.view_empty, null);
-//        emptyView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.MATCH_PARENT));
+        //// TODO: 2019/6/5 替换空布局图片
+        setAdapterView(adapter,"空空如也",R.mipmap.ic_launcher,false);
+    }
+
+    /**
+     * 显示加载中布局
+     * @param adapter recyclerView的适配器
+     */
+    public void showLoadView(BaseQuickAdapter adapter){
+        setAdapterView(adapter,"加载中……",0,true);
+    }
+
+    /**
+     * 设置适配器的空布局
+     * @param adapter 适配器
+     * @param msg 空布局文字提示
+     * @param ImgResId 空布局图片资源，若isLoad为true则不生效
+     * @param isLoad 是否是加载中
+     */
+    public void setAdapterView(BaseQuickAdapter adapter,String msg,int ImgResId,boolean isLoad){
+        if(emptyView == null){
+            emptyView = getLayoutInflater().inflate(R.layout.view_empty, null);
+        }
+        ((TextView)emptyView.findViewById(R.id.textView_msg)).setText(msg);
+        if(isLoad){
+            emptyView.findViewById(R.id.imageView_img).setVisibility(View.GONE);
+            emptyView.findViewById(R.id.progressBar_loading).setVisibility(View.VISIBLE);
+        }else{
+            ((ImageView)emptyView.findViewById(R.id.imageView_img)).setImageResource(ImgResId);
+            emptyView.findViewById(R.id.imageView_img).setVisibility(View.VISIBLE);
+            emptyView.findViewById(R.id.progressBar_loading).setVisibility(View.GONE);
+        }
+        adapter.getData().clear();
         adapter.setEmptyView(emptyView);
     }
 

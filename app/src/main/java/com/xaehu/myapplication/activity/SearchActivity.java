@@ -47,8 +47,19 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
     public void initData() {
         list = new ArrayList<>();
         adapter = new SearchAdapter(list);
+        //这个代码不写列表不会显示
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
-        recyclerView.setAdapter(adapter);
+//        recyclerView.setAdapter(adapter);
+        adapter.bindToRecyclerView(recyclerView);
+        //打开可上拉加载
+        adapter.setEnableLoadMore(true);
+        //默认第一次加载会进入loadMore回调，如果不需要可以配置：
+        adapter.disableLoadMoreIfNotFullPage();
+        //滑动动画
+        adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        //The default animation for each item only once, if you want to repeat the animation method can be called at
+        adapter.isFirstOnly(false);
+
     }
 
     @Override
@@ -71,6 +82,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
     public void onClick(View v) {
         page = 1;
         name = editText.getText().toString();
+        showLoading();
         getP().search(name,page);
     }
 
@@ -81,13 +93,14 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
     public void showData(KugouSearch kugouSearch) {
         if(kugouSearch.getErrcode() == 0){
             int count = kugouSearch.getData().getTotal();
-            Log.i(TAG, "showData: count"+count);
+            Log.i(TAG, "showData: count:"+count);
             adapter.setHeaderView(getHeaderView(count));
             if(kugouSearch.getData().getInfo()!=null){
                 int size = kugouSearch.getData().getInfo().size();
                 if(size != 0){
                     if(page == 1){
                         list.clear();
+                        page++;
                     }else{
                         if(size< BaseConstant.PAGE_SIZE){
                             adapter.loadMoreEnd();
@@ -100,13 +113,19 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
                     adapter.notifyDataSetChanged();
                 }else{
                     adapter.loadMoreEnd();
+                    showEmpty();
                 }
             }else{
                 if(page == 1){
                     showEmpty();
+                }else{
+                    adapter.loadMoreEnd();
                 }
             }
         }else{
+            if(page != 1){
+                adapter.loadMoreFail();
+            }
             showToast("错误码："+kugouSearch.getErrcode());
         }
     }
@@ -123,5 +142,19 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
      */
     public void showEmpty(){
         showEmptyView(adapter);
+    }
+    /**
+     * 显示加载布局（主要针对首次搜索的时候）
+     */
+    public void showLoading(){
+        showLoadView(adapter);
+    }
+
+    public void loadFail() {
+        adapter.loadMoreFail();
+    }
+
+    public void showError(String msg) {
+        showErrorView(adapter,msg);
     }
 }

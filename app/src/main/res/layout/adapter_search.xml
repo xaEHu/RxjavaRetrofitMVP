@@ -142,7 +142,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="hash："/>
+            android:text="mvhash："/>
         <TextView
             android:id="@+id/mvhash"
             android:layout_width="0dp"
