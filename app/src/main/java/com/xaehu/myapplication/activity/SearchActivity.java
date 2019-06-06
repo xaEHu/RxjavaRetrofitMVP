@@ -1,15 +1,21 @@
 package com.xaehu.myapplication.activity;
 
 import android.annotation.SuppressLint;
+import android.graphics.Canvas;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
+import com.chad.library.adapter.base.listener.OnItemDragListener;
+import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import com.xaehu.myapplication.R;
 import com.xaehu.myapplication.adapter.SearchAdapter;
 import com.xaehu.myapplication.base.BaseActivity;
@@ -33,6 +39,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
 
     @Override
     protected void initView() {
+        setTitle("搜索");
         recyclerView = findViewById(R.id.rv_list);
         editText = findViewById(R.id.editText);
         button = findViewById(R.id.button);
@@ -42,6 +49,12 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
     public int getLayoutId() {
         return R.layout.acticity_search;
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_search, menu);
+//        return true;
+//    }
 
     @Override
     public void initData() {
@@ -56,11 +69,47 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
         //默认第一次加载会进入loadMore回调，如果不需要可以配置：
         adapter.disableLoadMoreIfNotFullPage();
         //滑动动画
-        adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        adapter.openLoadAnimation(BaseQuickAdapter.SLIDEIN_LEFT);
         //The default animation for each item only once, if you want to repeat the animation method can be called at
         adapter.isFirstOnly(false);
+        //前4条不显示动画
+        adapter.setNotDoAnimationCount(4);
+
+        ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        // 开启拖拽
+        adapter.enableDragItem(itemTouchHelper, R.id.filename, true);
+        adapter.setOnItemDragListener(onItemDragListener);
+
+        // 开启滑动删除
+        adapter.enableSwipeItem();
+        adapter.setOnItemSwipeListener(onItemSwipeListener);
 
     }
+
+    OnItemDragListener onItemDragListener = new OnItemDragListener() {
+        @Override
+        public void onItemDragStart(RecyclerView.ViewHolder viewHolder, int pos){}
+        @Override
+        public void onItemDragMoving(RecyclerView.ViewHolder source, int from, RecyclerView.ViewHolder target, int to) {}
+        @Override
+        public void onItemDragEnd(RecyclerView.ViewHolder viewHolder, int pos) {}
+    };
+
+    OnItemSwipeListener onItemSwipeListener = new OnItemSwipeListener() {
+        @Override
+        public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {}
+        @Override
+        public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {}
+        @Override
+        public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {}
+        @Override
+        public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
+
+        }
+    };
 
     @Override
     public void initListener() {
@@ -79,6 +128,11 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
     }
 
     @Override
+    protected boolean hasBackBtn() {
+        return true;
+    }
+
+    @Override
     public void onClick(View v) {
         page = 1;
         name = editText.getText().toString();
@@ -92,9 +146,12 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
      */
     public void showData(KugouSearch kugouSearch) {
         if(kugouSearch.getErrcode() == 0){
-            int count = kugouSearch.getData().getTotal();
-            Log.i(TAG, "showData: count:"+count);
-            adapter.setHeaderView(getHeaderView(count));
+            if(page == 1){
+                int count = kugouSearch.getData().getTotal();
+                adapter.setHeaderView(getHeaderView(count));
+            }else{
+                adapter.loadMoreEnd();
+            }
             if(kugouSearch.getData().getInfo()!=null){
                 int size = kugouSearch.getData().getInfo().size();
                 if(size != 0){
@@ -118,8 +175,6 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
             }else{
                 if(page == 1){
                     showEmpty();
-                }else{
-                    adapter.loadMoreEnd();
                 }
             }
         }else{

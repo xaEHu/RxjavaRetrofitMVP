@@ -17,10 +17,10 @@ import io.reactivex.schedulers.Schedulers;
 public class SearchPresenter extends BasePresenter<SearchActivity> {
 
     public void search(String name,final int page){
-//        if(name.isEmpty()){
-//            getV().showToast("内容不能为空");
-//            return;
-//        }
+        if(name.isEmpty()){
+            getV().showToast("内容不能为空");
+            return;
+        }
         Map<String,Object> map = new HashMap<>();
         map.put("keyword",name);
         map.put("page",page);

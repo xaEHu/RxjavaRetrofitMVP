@@ -46,6 +46,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
     /**
      * @return 是否有返回按钮
+     * 需要有的话重写此方法返回true
      */
     protected boolean hasBackBtn(){
         return false;
@@ -103,7 +104,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     /**
      * 显示错误布局
      * @param adapter recyclerView的适配器
-     * @param msg 错误信息
+     * @param msg 错误提示信息
      */
     public void showErrorView(BaseQuickAdapter adapter,String msg){
         //// TODO: 2019/6/5 替换错误布局图片
@@ -131,10 +132,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      * 设置适配器的空布局
      * @param adapter 适配器
      * @param msg 空布局文字提示
-     * @param ImgResId 空布局图片资源，若isLoad为true则不生效
+     * @param imgResId 空布局图片资源，若isLoad为true则不生效
      * @param isLoad 是否是加载中
      */
-    public void setAdapterView(BaseQuickAdapter adapter,String msg,int ImgResId,boolean isLoad){
+    public void setAdapterView(BaseQuickAdapter adapter,String msg,int imgResId,boolean isLoad){
         if(emptyView == null){
             emptyView = getLayoutInflater().inflate(R.layout.view_empty, null);
         }
@@ -143,12 +144,13 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             emptyView.findViewById(R.id.imageView_img).setVisibility(View.GONE);
             emptyView.findViewById(R.id.progressBar_loading).setVisibility(View.VISIBLE);
         }else{
-            ((ImageView)emptyView.findViewById(R.id.imageView_img)).setImageResource(ImgResId);
+            ((ImageView)emptyView.findViewById(R.id.imageView_img)).setImageResource(imgResId);
             emptyView.findViewById(R.id.imageView_img).setVisibility(View.VISIBLE);
             emptyView.findViewById(R.id.progressBar_loading).setVisibility(View.GONE);
         }
         adapter.getData().clear();
         adapter.setEmptyView(emptyView);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

@@ -6,21 +6,32 @@
     android:orientation="vertical"
     android:background="#ffffff">
 
-    <EditText
-        android:id="@+id/editText"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="最爱" />
+        android:layout_marginTop="@dimen/dp_10"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/button"
-        android:onClick="click"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="搜索" />
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:text="最爱" />
+
+        <Button
+            android:id="@+id/button"
+            android:onClick="click"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="搜索" />
+
+    </LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
+        android:background="#9f9f9f"
         android:id="@+id/rv_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"

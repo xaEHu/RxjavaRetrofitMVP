@@ -2,6 +2,7 @@ package com.xaehu.myapplication.adapter;
 
 import android.support.annotation.Nullable;
 
+import com.chad.library.adapter.base.BaseItemDraggableAdapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xaehu.myapplication.R;
@@ -9,7 +10,7 @@ import com.xaehu.myapplication.bean.KugouSearch;
 
 import java.util.List;
 
-public class SearchAdapter extends BaseQuickAdapter<KugouSearch.DataBean.InfoBean, BaseViewHolder> {
+public class SearchAdapter extends BaseItemDraggableAdapter<KugouSearch.DataBean.InfoBean, BaseViewHolder> {
     public SearchAdapter(@Nullable List<KugouSearch.DataBean.InfoBean> data) {
         super(R.layout.adapter_search,data);
     }
