@@ -20,6 +20,7 @@ import com.xaehu.myapplication.base.BaseConstant;
 import com.xaehu.myapplication.bean.KugouDetail;
 import com.xaehu.myapplication.presenter.SearchDetailPresenter;
 import com.xaehu.myapplication.utils.ActivityUtils;
+import com.xaehu.myapplication.utils.StaticUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,6 @@ public class SearchDetailActivity extends BaseActivity<SearchDetailPresenter> im
     private List<KugouDetail> list;
     private String name;
     private int page;
-    private ItemTouchHelper itemTouchHelper;
     private boolean isEdit = false;
 
     @Override
@@ -65,13 +65,10 @@ public class SearchDetailActivity extends BaseActivity<SearchDetailPresenter> im
             if(isEdit){
                 isEdit = false;
                 item.setIcon(android.R.drawable.ic_menu_edit);
-                adapter.disableDragItem();
                 adapter.disableSwipeItem();
             }else{
                 isEdit = true;
                 item.setIcon(android.R.drawable.ic_menu_save);
-                // 开启拖拽
-                adapter.enableDragItem(itemTouchHelper,R.id.tv_song,true);
                 // 开启滑动删除
                 adapter.enableSwipeItem();
 
@@ -91,8 +88,10 @@ public class SearchDetailActivity extends BaseActivity<SearchDetailPresenter> im
         adapter.disableLoadMoreIfNotFullPage();
 
         ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
-        itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+        // 开启拖拽
+        adapter.enableDragItem(itemTouchHelper,R.id.ll_drag,true);
     }
 
     /**
@@ -210,6 +209,14 @@ public class SearchDetailActivity extends BaseActivity<SearchDetailPresenter> im
      */
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+        KugouDetail detail = (KugouDetail) adapter.getItem(position);
+        String url = detail.getUrl();
+        if(url != null && !"".equals(url)){
+            StaticUtils.copyText(url);
+            showToast("外链已复制");
+        }else{
+            showToast("该首歌曲没有外链资源");
+        }
 
     }
 }

@@ -1,7 +1,11 @@
 package com.xaehu.myapplication.utils;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.util.Log;
 
+import com.xaehu.myapplication.App;
 import com.xaehu.myapplication.BuildConfig;
 
 import java.text.SimpleDateFormat;
@@ -43,5 +47,17 @@ public class StaticUtils {
         Date dates = new Date(times);
         SimpleDateFormat sdf = new SimpleDateFormat("mm:ss", Locale.getDefault());
         return sdf.format(dates);
+    }
+
+    /**
+     * 复制到剪贴板
+     * @param text
+     */
+    public static void copyText(String  text){
+        ClipboardManager clipboardManager = (ClipboardManager) App.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        //创建ClipData对象
+        ClipData clipData = ClipData.newPlainText("MusicUrlClip", text);
+        //添加ClipData对象到剪切板中
+        clipboardManager.setPrimaryClip(clipData);
     }
 }

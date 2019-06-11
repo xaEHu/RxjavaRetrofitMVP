@@ -1,5 +1,6 @@
 package com.xaehu.myapplication.adapter;
 
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
@@ -26,5 +27,14 @@ public class SearchDetailAdapter extends BaseItemDraggableAdapter<KugouDetail, B
         helper.setText(R.id.tv_song,item.getSongName());
         helper.setText(R.id.tv_singer,item.getSingerName());
         helper.setText(R.id.tv_time, StaticUtils.sToMin(item.getTimeLength()));
+        int color;
+        if(item.getUrl()!=null && !"".equals(item.getUrl())){
+            color = Color.BLACK;
+        }else{
+            color = Color.GRAY;
+        }
+        helper.setTextColor(R.id.tv_song, color);
+        helper.setTextColor(R.id.tv_singer, color);
+        helper.setTextColor(R.id.tv_time, color);
     }
 }
