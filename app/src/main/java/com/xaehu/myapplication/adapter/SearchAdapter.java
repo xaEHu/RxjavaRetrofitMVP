@@ -10,7 +10,7 @@ import com.xaehu.myapplication.bean.KugouSearch;
 
 import java.util.List;
 
-public class SearchAdapter extends BaseItemDraggableAdapter<KugouSearch.DataBean.InfoBean, BaseViewHolder> {
+public class SearchAdapter extends BaseQuickAdapter<KugouSearch.DataBean.InfoBean, BaseViewHolder> {
     public SearchAdapter(@Nullable List<KugouSearch.DataBean.InfoBean> data) {
         super(R.layout.adapter_search,data);
     }

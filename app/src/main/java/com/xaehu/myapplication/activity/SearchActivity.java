@@ -1,10 +1,9 @@
 package com.xaehu.myapplication.activity;
 
 import android.annotation.SuppressLint;
-import android.graphics.Canvas;
-import android.support.v7.widget.LinearLayoutManager;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,21 +13,19 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
-import com.chad.library.adapter.base.listener.OnItemDragListener;
-import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import com.xaehu.myapplication.R;
 import com.xaehu.myapplication.adapter.SearchAdapter;
 import com.xaehu.myapplication.base.BaseActivity;
 import com.xaehu.myapplication.base.BaseConstant;
 import com.xaehu.myapplication.bean.KugouSearch;
 import com.xaehu.myapplication.presenter.SearchPresenter;
+import com.xaehu.myapplication.utils.ActivityUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends BaseActivity<SearchPresenter> implements View.OnClickListener {
 
-    private final String TAG = "SearchActivity";
     private EditText editText;
     private Button button;
     private RecyclerView recyclerView;
@@ -39,7 +36,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
 
     @Override
     protected void initView() {
-        setTitle("搜索");
+        setTitle("外层搜索");
         recyclerView = findViewById(R.id.rv_list);
         editText = findViewById(R.id.editText);
         button = findViewById(R.id.button);
@@ -50,20 +47,11 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
         return R.layout.acticity_search;
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_search, menu);
-//        return true;
-//    }
-
     @Override
     public void initData() {
         list = new ArrayList<>();
         adapter = new SearchAdapter(list);
-        //这个代码不写列表不会显示
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
-//        recyclerView.setAdapter(adapter);
-        adapter.bindToRecyclerView(recyclerView);
+        ActivityUtils.getInstance().bindToRecyclerView(adapter,recyclerView);
         //打开可上拉加载
         adapter.setEnableLoadMore(true);
         //默认第一次加载会进入loadMore回调，如果不需要可以配置：
@@ -74,42 +62,7 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
         adapter.isFirstOnly(false);
         //前4条不显示动画
         adapter.setNotDoAnimationCount(4);
-
-        ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        // 开启拖拽
-        adapter.enableDragItem(itemTouchHelper, R.id.filename, true);
-        adapter.setOnItemDragListener(onItemDragListener);
-
-        // 开启滑动删除
-        adapter.enableSwipeItem();
-        adapter.setOnItemSwipeListener(onItemSwipeListener);
-
     }
-
-    OnItemDragListener onItemDragListener = new OnItemDragListener() {
-        @Override
-        public void onItemDragStart(RecyclerView.ViewHolder viewHolder, int pos){}
-        @Override
-        public void onItemDragMoving(RecyclerView.ViewHolder source, int from, RecyclerView.ViewHolder target, int to) {}
-        @Override
-        public void onItemDragEnd(RecyclerView.ViewHolder viewHolder, int pos) {}
-    };
-
-    OnItemSwipeListener onItemSwipeListener = new OnItemSwipeListener() {
-        @Override
-        public void onItemSwipeStart(RecyclerView.ViewHolder viewHolder, int pos) {}
-        @Override
-        public void clearView(RecyclerView.ViewHolder viewHolder, int pos) {}
-        @Override
-        public void onItemSwiped(RecyclerView.ViewHolder viewHolder, int pos) {}
-        @Override
-        public void onItemSwipeMoving(Canvas canvas, RecyclerView.ViewHolder viewHolder, float dX, float dY, boolean isCurrentlyActive) {
-
-        }
-    };
 
     @Override
     public void initListener() {
@@ -212,4 +165,5 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
     public void showError(String msg) {
         showErrorView(adapter,msg);
     }
+
 }

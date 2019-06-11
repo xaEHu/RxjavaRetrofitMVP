@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.xaehu.myapplication"
-        minSdkVersion 21
+        minSdkVersion 14
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -41,4 +41,6 @@ dependencies {
     implementation('com.github.ihsanbal:LoggingInterceptor:3.0.0') {
         exclude group: 'org.json', module: 'json'
     }
+    //图片加载
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
 }

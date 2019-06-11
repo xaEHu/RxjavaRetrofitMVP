@@ -11,6 +11,7 @@ import com.xaehu.myapplication.presenter.MainPresenter;
 public class MainActivity extends BaseActivity<MainPresenter> implements View.OnClickListener {
 
     private TextView tvMain;
+    private TextView tvDetail;
 
     @Override
     public int getLayoutId() {
@@ -20,6 +21,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements View.On
     @Override
     public void initView() {
         tvMain = findViewById(R.id.tv_main);
+        tvDetail = findViewById(R.id.tv_detail);
     }
 
     @Override
@@ -27,14 +29,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements View.On
 
     }
 
-    private void gotoLogin() {
-        Intent intent = new Intent(this,SearchActivity.class);
-        startActivity(intent);
-    }
-
     @Override
     public void initListener() {
         tvMain.setOnClickListener(this);
+        tvDetail.setOnClickListener(this);
     }
 
     @Override
@@ -44,7 +42,12 @@ public class MainActivity extends BaseActivity<MainPresenter> implements View.On
 
     @Override
     public void onClick(View v) {
-        gotoLogin();
+        Intent intent = new Intent();
+        if(v == tvMain){
+            intent.setClass(this,SearchActivity.class);
+        }else if(v == tvDetail){
+            intent.setClass(this,SearchDetailActivity.class);
+        }
+        startActivity(intent);
     }
-
 }
