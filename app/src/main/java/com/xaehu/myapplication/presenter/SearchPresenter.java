@@ -25,35 +25,21 @@ public class SearchPresenter extends BasePresenter<SearchActivity> {
         map.put("keyword",name);
         map.put("page",page);
         map.put("pagesize", BaseConstant.PAGE_SIZE);
-        Api.getApiService().searchKugou(map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<KugouSearch>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+        request(Api.getApiService().searchKugou(map), new OnRespListener<KugouSearch>() {
+            @Override
+            public void onSuccess(KugouSearch value) {
+                getV().showData(value);
+            }
 
-                    }
-
-                    @Override
-                    public void onNext(KugouSearch kugouSearch) {
-                        getV().showData(kugouSearch);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        getV().onError(e);
-                        if(page == 1){
-                            getV().showError(e.getMessage());
-                        }else{
-                            getV().loadFail();
-                        }
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-
+            @Override
+            public void onFailed(Throwable e) {
+                getV().onError(e);
+                if(page == 1){
+                    getV().showError(e.getMessage());
+                }else{
+                    getV().loadFail();
+                }
+            }
+        });
     }
 }

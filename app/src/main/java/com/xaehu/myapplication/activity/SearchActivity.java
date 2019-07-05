@@ -1,18 +1,13 @@
 package com.xaehu.myapplication.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.xaehu.myapplication.R;
 import com.xaehu.myapplication.adapter.SearchAdapter;
 import com.xaehu.myapplication.base.BaseActivity;
