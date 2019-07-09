@@ -33,7 +33,7 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:background="#9f9f9f"
+        android:background="#cccccc"
         android:id="@+id/rv_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"

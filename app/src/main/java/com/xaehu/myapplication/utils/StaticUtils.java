@@ -8,9 +8,14 @@ import android.util.Log;
 import com.xaehu.myapplication.App;
 import com.xaehu.myapplication.BuildConfig;
 
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import retrofit2.HttpException;
 
 /**
 * @author xaeHu
@@ -59,5 +64,19 @@ public class StaticUtils {
         ClipData clipData = ClipData.newPlainText("MusicUrlClip", text);
         //添加ClipData对象到剪切板中
         clipboardManager.setPrimaryClip(clipData);
+    }
+
+    public static String getErrorMsg(Throwable e){
+        if (e instanceof UnknownHostException) {
+            return ("无网络连接");
+        } else if (e instanceof SocketTimeoutException) {
+            return ("请求超时");
+        } else if (e instanceof ConnectException) {
+            return ("连接失败");
+        } else if (e instanceof HttpException) {
+            return ("请求超时");
+        }else {
+            return ("请求失败："+e.getMessage());
+        }
     }
 }

@@ -1,7 +1,10 @@
 package com.xaehu.myapplication.utils;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.inputmethod.InputMethodManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xaehu.myapplication.App;
@@ -43,6 +46,16 @@ public class ActivityUtils {
         recyclerView.setLayoutManager(new LinearLayoutManager(App.getContext(),
                 isHorizontal?LinearLayoutManager.HORIZONTAL:LinearLayoutManager.VERTICAL,false));
         adapter.bindToRecyclerView(recyclerView);
+    }
+
+    /**
+     * 收起输入法
+     */
+    public void hideInput(Activity ctx){
+        InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(imm!=null){
+            imm.hideSoftInputFromWindow(ctx.getWindow().getDecorView().getWindowToken(), 0);
+        }
     }
 
 }
