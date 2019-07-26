@@ -54,12 +54,16 @@ public class SearchDetailPresenter extends BasePresenter<SearchDetailActivity> {
 
                     @Override
                     public void onSuccess(List<KugouDetail> value) {
-                        getV().showData(value);
+                        if(getV()!=null){
+                            getV().showData(value);
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        getV().onError(e);
+                        if(getV()!=null){
+                            getV().onError(e);
+                        }
                     }
                 });
 
