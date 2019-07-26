@@ -32,9 +32,4 @@ public class PersonFragment extends BaseFragment<PersonP> {
     public void initListener() {
 
     }
-
-    @Override
-    public PersonP newP() {
-        return new PersonP();
-    }
 }

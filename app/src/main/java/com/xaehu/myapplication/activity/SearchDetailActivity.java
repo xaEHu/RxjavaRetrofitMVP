@@ -137,11 +137,6 @@ public class SearchDetailActivity extends BaseActivity<SearchDetailPresenter> im
     }
 
     @Override
-    public SearchDetailPresenter newP() {
-        return new SearchDetailPresenter();
-    }
-
-    @Override
     protected boolean hasBackBtn() {
         return true;
     }

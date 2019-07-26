@@ -4,9 +4,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,20 +11,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.xaehu.myapplication.App;
 import com.xaehu.myapplication.R;
-import com.xaehu.myapplication.adapter.SearchAdapter;
 import com.xaehu.myapplication.mvp.IView;
+import com.xaehu.myapplication.utils.StaticUtils;
 
+import java.lang.reflect.ParameterizedType;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.List;
 import java.util.Objects;
 
 import retrofit2.HttpException;
 
-public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IView<P> {
+public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IView {
 
     private P p;
     private View emptyView;
@@ -82,7 +78,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
      */
     public P getP(){
         if(p == null){
-            p = newP();
+            //泛型形式实例化P层
+            ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
+            Class<P> clazz = (Class<P>) parameterizedType.getActualTypeArguments()[0];
+            try {
+                p = clazz.newInstance();
+            }catch (Exception e){
+                StaticUtils.loge(e.getMessage());
+            }
         }
         if(p != null){
             if(!p.isAttachedV()){

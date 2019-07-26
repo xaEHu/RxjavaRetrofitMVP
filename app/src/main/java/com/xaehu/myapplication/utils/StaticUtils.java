@@ -27,12 +27,28 @@ public class StaticUtils {
      * 打印日志
      * @param msg 日志内容
      */
-    public static void log(String msg){
+    public static void logi(String msg){
         if(BuildConfig.DEBUG){
             Log.i("myout", "---myout---------------------------------------------------");
-            Log.i("myout", "|\t\t"+msg);
+            Log.i("myout", "|\t"+line()+"\t\t"+msg);
             Log.i("myout", "-----------------------------------------------------------");
         }
+    }
+
+    /**
+     * 打印日志
+     * @param msg 日志内容
+     */
+    public static void loge(String msg){
+        if(BuildConfig.DEBUG){
+            Log.e("myout_error", "---error---------------------------------------------------");
+            Log.e("myout_error", "|\t"+line()+"\t\t"+msg);
+            Log.e("myout_error", "-----------------------------------------------------------");
+        }
+    }
+    public static String line() {
+        StackTraceElement ste = new Throwable().getStackTrace()[2];
+        return "(" + ste.getFileName() + ":" + ste.getLineNumber() + ") ";
     }
 
     /**

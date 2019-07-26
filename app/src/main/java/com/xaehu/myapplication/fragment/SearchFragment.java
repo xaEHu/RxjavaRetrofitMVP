@@ -75,11 +75,6 @@ public class SearchFragment extends BaseFragment<SearchP> implements View.OnClic
     }
 
     @Override
-    public SearchP newP() {
-        return new SearchP();
-    }
-
-    @Override
     public void onClick(View v) {
         page = 1;
         name = editText.getText().toString();

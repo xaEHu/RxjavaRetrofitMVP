@@ -13,7 +13,6 @@ import com.xaehu.myapplication.fragment.SearchFragment;
 import com.xaehu.myapplication.presenter.MainPresenter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends BaseActivity<MainPresenter> {
 
@@ -64,10 +63,4 @@ public class MainActivity extends BaseActivity<MainPresenter> {
             }
         });
     }
-
-    @Override
-    public MainPresenter newP() {
-        return new MainPresenter();
-    }
-
 }

@@ -71,11 +71,6 @@ public class SearchActivity extends BaseActivity<SearchPresenter> implements Vie
     }
 
     @Override
-    public SearchPresenter newP() {
-        return new SearchPresenter();
-    }
-
-    @Override
     protected boolean hasBackBtn() {
         return true;
     }

@@ -45,11 +45,6 @@ public class HomeFragment extends BaseFragment<HomeP> implements View.OnClickLis
         tvDetail.setOnClickListener(this);
     }
 
-    @Override
-    public HomeP newP() {
-        return new HomeP();
-    }
-
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View v) {

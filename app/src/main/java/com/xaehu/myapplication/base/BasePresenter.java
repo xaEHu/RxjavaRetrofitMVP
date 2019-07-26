@@ -56,12 +56,16 @@ public class BasePresenter<V extends IView> implements IPresenter<V> {
 
                     @Override
                     public void onNext(M value) {
-                        listener.onSuccess(value);
+                        if(getV() != null) {
+                            listener.onSuccess(value);
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        listener.onFailed(e);
+                        if(getV() != null){
+                            listener.onFailed(e);
+                        }
                     }
 
                     @Override

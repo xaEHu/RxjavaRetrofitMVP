@@ -78,11 +78,6 @@ public class SearchDetailFragment extends BaseFragment<SearchDetailP> implements
     }
 
     @Override
-    public SearchDetailP newP() {
-        return new SearchDetailP();
-    }
-
-    @Override
     public void onClick(View v) {
         page = 1;
         name = editText.getText().toString();

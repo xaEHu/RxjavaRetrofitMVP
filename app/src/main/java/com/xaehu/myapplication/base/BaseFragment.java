@@ -14,10 +14,11 @@ import android.widget.Toast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xaehu.myapplication.R;
 import com.xaehu.myapplication.mvp.IView;
-import com.xaehu.myapplication.utils.ActivityUtils;
 import com.xaehu.myapplication.utils.StaticUtils;
 
-public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements IView<P> {
+import java.lang.reflect.ParameterizedType;
+
+public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements IView {
 
     private P p;
     private View emptyView;
@@ -39,7 +40,14 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
 
     public P getP(){
         if(p == null){
-            p = newP();
+            //实例化P层，类似于p = new P();
+            ParameterizedType parameterizedType = (ParameterizedType) getClass().getGenericSuperclass();
+            Class<P> clazz = (Class<P>) parameterizedType.getActualTypeArguments()[0];
+            try {
+                p = clazz.newInstance();
+            }catch (Exception e){
+                StaticUtils.loge(e.getMessage());
+            }
         }
         if(p != null){
             if(!p.isAttachedV()){
